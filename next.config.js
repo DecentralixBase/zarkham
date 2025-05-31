@@ -26,10 +26,6 @@ const nextConfig = {
       },
     ];
   },
-  // Configure regions for Edge runtime
-  regions: ['all'],
-  // Enable Edge runtime globally
-  runtime: 'experimental-edge',
 };
 
 module.exports = nextConfig; 
