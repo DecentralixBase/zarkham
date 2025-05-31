@@ -6,45 +6,21 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "typecheck": "tsc --noEmit",
-    "check-deployment": "node scripts/check-deployment.js",
-    "predeploy": "npm run lint && npm run typecheck && npm run check-deployment"
+    "lint": "next lint"
   },
   "dependencies": {
-    "@apollo/client": "^3.8.7",
-    "@headlessui/react": "^1.7.17",
-    "@heroicons/react": "^2.0.18",
-    "axios": "^1.6.2",
-    "chart.js": "^4.4.0",
-    "framer-motion": "^10.16.4",
-    "graphql": "^16.8.1",
-    "next": "14.0.3",
-    "react": "^18.2.0",
-    "react-chartjs-2": "^5.2.0",
-    "react-dom": "^18.2.0"
-  },
-  "devDependencies": {
-    "@types/node": "^20.9.0",
-    "@types/react": "^18.2.37",
-    "@types/react-dom": "^18.2.15",
-    "@typescript-eslint/eslint-plugin": "^6.11.0",
-    "@typescript-eslint/parser": "^6.11.0",
-    "autoprefixer": "^10.4.16",
-    "eslint": "^8.53.0",
-    "eslint-config-next": "14.0.3",
-    "eslint-plugin-react": "^7.33.2",
-    "eslint-plugin-react-hooks": "^4.6.0",
-    "postcss": "^8.4.31",
-    "tailwindcss": "^3.3.5",
-    "typescript": "^5.2.2"
-  },
-  "engines": {
-    "node": ">=18.17.0"
-  },
-  "description": "A futuristic DeFi dashboard for tracking whale wallets, monitoring DeFi positions, and discovering alpha in real-time.",
-  "main": "next.config.js",
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+    "@heroicons/react": "^2.2.0",
+    "@types/node": "20.4.5",
+    "@types/react": "18.2.18",
+    "@types/react-dom": "18.2.7",
+    "autoprefixer": "10.4.14",
+    "ethers": "^6.7.0",
+    "next": "13.4.19",
+    "postcss": "8.4.27",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "recharts": "^2.15.3",
+    "tailwindcss": "3.3.3",
+    "typescript": "5.1.6"
+  }
 }

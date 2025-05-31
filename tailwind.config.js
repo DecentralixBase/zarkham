@@ -9,32 +9,11 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: {
-          50: '#f0f9ff',
-          100: '#e0f2fe',
-          200: '#bae6fd',
-          300: '#7dd3fc',
-          400: '#38bdf8',
-          500: '#0ea5e9',
-          600: '#0284c7',
-          700: '#0369a1',
-          800: '#075985',
-          900: '#0c4a6e',
-        },
-        secondary: {
-          DEFAULT: '#7000ff',
-          dark: '#5900cc',
-        },
-        background: {
-          DEFAULT: '#0a0b0f',
-          light: '#111217',
-          lighter: '#16171d',
-        },
-        accent: {
-          purple: '#7928ca',
-          blue: '#0070f3',
-          cyan: '#00c8ff',
-        },
+        primary: '#3B82F6',
+        secondary: '#10B981',
+        background: '#0F172A',
+        'background-lighter': '#1E293B',
+        text: '#F1F5F9',
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',

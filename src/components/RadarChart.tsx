@@ -1,84 +1,50 @@
-import React from 'react';
-import {
-  Chart as ChartJS,
-  RadialLinearScale,
-  PointElement,
-  LineElement,
-  Filler,
-  Tooltip,
-  Legend,
-} from 'chart.js';
-import { Radar } from 'react-chartjs-2';
+import { useEffect, useState } from 'react'
+import { api } from '@/services/api'
+import { TokenData } from '@/types/wallet'
 
-ChartJS.register(
-  RadialLinearScale,
-  PointElement,
-  LineElement,
-  Filler,
-  Tooltip,
-  Legend
-);
+export default function RadarChart() {
+  const [tokens, setTokens] = useState<TokenData[]>([])
+  const [loading, setLoading] = useState(true)
 
-interface RadarChartProps {
-  tokenAllocations: Array<{
-    token: string;
-    percentage: number;
-  }>;
-}
+  useEffect(() => {
+    const fetchTokens = async () => {
+      try {
+        const data = await api.getWalletData('0x47ac0fb4f2d84898e4d9e7b4dab3c24507a6d503')
+        setTokens(data.tokens)
+      } catch (error) {
+        console.error('Error fetching tokens:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
 
-export default function RadarChart({ tokenAllocations }: RadarChartProps) {
-  const data = {
-    labels: tokenAllocations.map(item => item.token),
-    datasets: [
-      {
-        label: 'Token Allocation',
-        data: tokenAllocations.map(item => item.percentage),
-        backgroundColor: 'rgba(0, 246, 255, 0.2)',
-        borderColor: '#00f6ff',
-        borderWidth: 2,
-        pointBackgroundColor: '#00f6ff',
-        pointBorderColor: '#fff',
-        pointHoverBackgroundColor: '#fff',
-        pointHoverBorderColor: '#00f6ff',
-      },
-    ],
-  };
+    fetchTokens()
+  }, [])
 
-  const options = {
-    responsive: true,
-    scales: {
-      r: {
-        angleLines: {
-          color: 'rgba(255, 255, 255, 0.1)',
-        },
-        grid: {
-          color: 'rgba(255, 255, 255, 0.1)',
-        },
-        pointLabels: {
-          color: 'rgba(255, 255, 255, 0.7)',
-          font: {
-            size: 12,
-          },
-        },
-        ticks: {
-          color: 'rgba(255, 255, 255, 0.7)',
-          backdropColor: 'transparent',
-        },
-      },
-    },
-    plugins: {
-      legend: {
-        display: false,
-      },
-    },
-  };
+  if (loading) {
+    return <div className="animate-pulse bg-background-lighter rounded-xl h-64 p-6" />
+  }
 
   return (
-    <div className="glass-effect p-6">
-      <h3 className="text-lg font-semibold text-white/90 mb-6">Token Allocation</h3>
-      <div className="h-[300px] w-full">
-        <Radar data={data} options={options} />
+    <div className="bg-background-lighter rounded-xl p-6">
+      <h2 className="text-xl font-semibold mb-4">Token Allocation</h2>
+      
+      <div className="space-y-4">
+        {tokens.map((token) => (
+          <div key={token.symbol} className="flex items-center justify-between">
+            <div>
+              <p className="text-sm">{token.name}</p>
+              <p className="text-xs text-gray-400">{token.symbol}</p>
+            </div>
+            <div className="text-right">
+              <p className="text-sm">${token.value.toLocaleString()}</p>
+              <p className={`text-xs ${token.change24h >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                {token.change24h >= 0 ? '+' : ''}{token.change24h.toFixed(2)}%
+              </p>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
-  );
+  )
 } 

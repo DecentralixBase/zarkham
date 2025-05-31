@@ -3,11 +3,7 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   images: {
-    domains: [
-      'assets.coingecko.com',
-      'ethplorer.io'
-    ],
-    unoptimized: true,
+    domains: ['assets.coingecko.com', 'etherscan.io'],
   },
   experimental: {
     serverActions: {

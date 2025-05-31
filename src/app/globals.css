@@ -40,9 +40,6 @@
 
 body {
   @apply antialiased;
-  background: radial-gradient(
-    circle at top center,
-    rgba(0, 246, 255, 0.1) 0%,
-    transparent 50%
-  );
+  color: rgb(var(--foreground-rgb));
+  background: rgb(var(--background-rgb));
 } 

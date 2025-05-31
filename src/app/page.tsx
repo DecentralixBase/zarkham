@@ -1,26 +1,26 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import * as React from 'react';
 import { api } from '@/services/api';
 import DashboardLayout from '@/components/DashboardLayout';
 import WalletCard from '@/components/WalletCard';
 import ActivityFeed from '@/components/ActivityFeed';
+import RadarChart from '@/components/RadarChart';
 import { motion } from 'framer-motion';
+import type { WalletData, ActivityData } from '@/types/wallet';
 
-export default function Home() {
-  const [whaleWallets, setWhaleWallets] = useState([]);
-  const [topTokens, setTopTokens] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+const Home: React.FC = () => {
+  const [whaleWallets, setWhaleWallets] = React.useState<WalletData[]>([]);
+  const [activities, setActivities] = React.useState<ActivityData[]>([]);
+  const [isLoading, setIsLoading] = React.useState(true);
 
-  useEffect(() => {
+  React.useEffect(() => {
     const fetchData = async () => {
       try {
-        const [wallets, tokens] = await Promise.all([
-          api.getWhaleWallets(),
-          api.getTopTokens()
-        ]);
+        const wallets = await api.getWhaleWallets();
+        const latestActivities = await api.getWalletActivity(wallets[0]?.address || '');
         setWhaleWallets(wallets);
-        setTopTokens(tokens);
+        setActivities(latestActivities);
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
@@ -31,35 +31,24 @@ export default function Home() {
     fetchData();
   }, []);
 
-  return (
-    <DashboardLayout>
-      <div className="min-h-screen bg-background p-4 sm:p-6 lg:p-8">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-        >
-          {isLoading ? (
-            Array(6).fill(0).map((_, i) => (
-              <div key={i} className="animate-pulse bg-background-lighter rounded-xl h-64" />
-            ))
-          ) : (
-            whaleWallets.slice(0, 6).map((wallet: any) => (
-              <WalletCard key={wallet.address} wallet={wallet} />
-            ))
-          )}
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.3 }}
-          className="mt-8"
-        >
-          <ActivityFeed />
-        </motion.div>
+  const content = (
+    <div className="min-h-screen bg-background p-4 sm:p-6 lg:p-8">
+      <h1 className="text-4xl font-bold mb-8">DeFi Alpha Feed</h1>
+      
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-2">
+          <WalletCard />
+          <ActivityFeed className="mt-6" />
+        </div>
+        
+        <div>
+          <RadarChart />
+        </div>
       </div>
-    </DashboardLayout>
+    </div>
   );
-} 
+
+  return <DashboardLayout>{content}</DashboardLayout>;
+};
+
+export default Home; 
