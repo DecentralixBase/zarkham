@@ -1,13 +1,6 @@
-import axios from 'axios';
-
-// Initialize API clients with public endpoints
-const defiClient = axios.create({
-  baseURL: 'https://api.coingecko.com/api/v3',
-});
-
-const ethplorerClient = axios.create({
-  baseURL: 'https://api.ethplorer.io',
-});
+// Initialize API endpoints
+const COINGECKO_API = 'https://api.coingecko.com/api/v3';
+const ETHPLORER_API = 'https://api.ethplorer.io';
 
 const WHALE_ADDRESSES = [
   '0x47ac0fb4f2d84898e4d9e7b4dab3c24507a6d503', // Binance
@@ -22,14 +15,8 @@ export const api = {
   // Get top tokens by market cap
   async getTopTokens() {
     try {
-      const { data } = await defiClient.get('/coins/markets', {
-        params: {
-          vs_currency: 'usd',
-          order: 'market_cap_desc',
-          per_page: 20,
-          sparkline: true,
-        },
-      });
+      const response = await fetch(`${COINGECKO_API}/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=20&sparkline=true`);
+      const data = await response.json();
       return data.map((token: any) => ({
         symbol: token.symbol.toUpperCase(),
         name: token.name,
@@ -49,9 +36,10 @@ export const api = {
     try {
       const wallets = await Promise.all(
         WHALE_ADDRESSES.map(async (address) => {
-          const { data } = await ethplorerClient.get(`/getAddressInfo/${address}`, {
-            params: { apiKey: 'freekey' }
-          });
+          const response = await fetch(
+            `${ETHPLORER_API}/getAddressInfo/${address}?apiKey=freekey`
+          );
+          const data = await response.json();
           
           return {
             address,
@@ -84,13 +72,10 @@ export const api = {
   // Get recent transactions using Ethplorer
   async getWalletActivity(address: string) {
     try {
-      const { data } = await ethplorerClient.get(`/getAddressHistory/${address}`, {
-        params: {
-          apiKey: 'freekey',
-          limit: 50,
-          type: 'transfer'
-        }
-      });
+      const response = await fetch(
+        `${ETHPLORER_API}/getAddressHistory/${address}?apiKey=freekey&limit=50&type=transfer`
+      );
+      const data = await response.json();
 
       return data.operations?.map((op: any) => ({
         id: op.transactionHash,
@@ -111,13 +96,10 @@ export const api = {
   // Get token prices from CoinGecko
   async getTokenPrices(tokens: string[]) {
     try {
-      const { data } = await defiClient.get('/simple/price', {
-        params: {
-          ids: tokens.join(','),
-          vs_currencies: 'usd',
-          include_24hr_change: true,
-        },
-      });
+      const response = await fetch(
+        `${COINGECKO_API}/simple/price?ids=${tokens.join(',')}&vs_currencies=usd&include_24hr_change=true`
+      );
+      const data = await response.json();
       return data;
     } catch (error) {
       console.error('Error fetching token prices:', error);
@@ -128,7 +110,8 @@ export const api = {
   // Get global DeFi stats from CoinGecko
   async getDefiStats() {
     try {
-      const { data } = await defiClient.get('/global');
+      const response = await fetch(`${COINGECKO_API}/global`);
+      const data = await response.json();
       return {
         totalMarketCap: data.data.total_market_cap.usd,
         defiDominance: data.data.defi_market_cap / data.data.total_market_cap.usd * 100,

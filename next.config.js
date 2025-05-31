@@ -7,6 +7,12 @@ const nextConfig = {
       'assets.coingecko.com',
       'ethplorer.io'
     ],
+    unoptimized: true,
+  },
+  experimental: {
+    serverActions: {
+      allowedOrigins: ['*'],
+    },
   },
   async headers() {
     return [
@@ -20,6 +26,10 @@ const nextConfig = {
       },
     ];
   },
+  // Configure regions for Edge runtime
+  regions: ['all'],
+  // Enable Edge runtime globally
+  runtime: 'experimental-edge',
 };
 
 module.exports = nextConfig; 
