@@ -3,10 +3,5 @@
   "buildCommand": "next build",
   "devCommand": "next dev",
   "installCommand": "npm install",
-  "framework": "nextjs",
-  "regions": ["all"],
-  "env": {
-    "NEXT_PUBLIC_COVALENT_API_KEY": "@covalent_api_key",
-    "NEXT_PUBLIC_ZAPPER_API_URL": "https://api.zapper.xyz/v2/graphql"
-  }
+  "framework": "nextjs"
 } 

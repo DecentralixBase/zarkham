@@ -1,8 +1,11 @@
 import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
 
-export async function GET(request: NextRequest) {
-  return NextResponse.json({ status: 'ok' });
-}
+export const dynamic = 'force-static';
+export const revalidate = false;
 
-export const dynamic = 'force-dynamic'; 
+export async function GET() {
+  return NextResponse.json({
+    status: 'ok',
+    message: 'Static API endpoint'
+  });
+} 
