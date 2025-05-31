@@ -1,12 +1,14 @@
-import { useEffect, useState } from 'react'
+'use client'
+
+import React from 'react'
 import { api } from '@/services/api'
 import { TokenData } from '@/types/wallet'
 
 export default function RadarChart() {
-  const [tokens, setTokens] = useState<TokenData[]>([])
-  const [loading, setLoading] = useState(true)
+  const [tokens, setTokens] = React.useState<TokenData[]>([])
+  const [loading, setLoading] = React.useState(true)
 
-  useEffect(() => {
+  React.useEffect(() => {
     const fetchTokens = async () => {
       try {
         const data = await api.getWalletData('0x47ac0fb4f2d84898e4d9e7b4dab3c24507a6d503')
@@ -30,7 +32,7 @@ export default function RadarChart() {
       <h2 className="text-xl font-semibold mb-4">Token Allocation</h2>
       
       <div className="space-y-4">
-        {tokens.map((token) => (
+        {tokens.map((token: TokenData) => (
           <div key={token.symbol} className="flex items-center justify-between">
             <div>
               <p className="text-sm">{token.name}</p>
